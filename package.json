@@ -1,0 +1,15 @@
+{
+  "name": "bacata-bank",
+"version": "1.0.0",
+"description": "Proyecto para MTI",
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+"keywords": [],
+"author": "Paul Diaz",
+"license": "ISC",
+"dependencies": {
+    "bootstrap": "^5.3.1",
+    "lowdb": "^6.0.1"
+  }
+}
