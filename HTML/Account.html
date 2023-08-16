@@ -30,7 +30,8 @@
   <header class="header">
         
     <nav class="navbar navbar-expand-sm navbar bg justify-content-end">
-        <div class="container-fluid col-12">
+        
+      <div class="container-fluid col">
           <a href='../Index.html'>
             
             <img src="../Images/Bacata Banking all w.png" class="logobank col-4 me" alt="Bank Image">
@@ -60,30 +61,34 @@
             </ul>
          </div>
 
-              <div class="container">
-                <div class="row">
-                  <div class="row text-right d-flex justify-content-end">
-                    <span id="userInfo">usuario@email.com</span>
-                    <button id="logoutBtn" class="col-8 btn btn-success">Log off</button>
-                  </div>
-                </div>
-              </div>
+        <div class="container align-content-end">
+          <div class="col">
+            <div class="row text-right d-flex justify-content-end">
+              <span id="userInfo" class="text-light fw-bold pb-3">usuario@email.com</span>
+              <button id="logoutBtn" class="btn btn-success">Log off</button>
+            </div>
+          </div>
+        </div>
              
             </div>
         </nav>    
     </header>
 
-    <div>
-      <h1 class="Welcome pt-5 px-5">Hello
-        <label class= "text" id="nameAccount"></label>
-      !</h1>
-      <p class="px-5">Here you will find information about your products.</p>
-    </div>
+    <section class="m-0 p-0">
+      <div class="greetings shadow m-0 rounded-bottom-4">
+        <h1 class="Welcome pt-5 px-5">Hello
+          <label class= "text" id="nameAccount"></label>
+        !</h1>
+        <p class="px-5 pb-5">Here you will find information about your products.</p>
+      </div>
+    </section>
+
+
     
 
 
-    <main class="col-12 d-flex p-5">
-
+    <main class="col-12 d-flex p-5 border-end">
+      
       <section class="col-2">
         <ul class="nav nav-underline flex-column d-flex justify-content-start">
           <li class="nav-item">
@@ -99,7 +104,9 @@
             <a class="nav-link" href="#">Withdraw</a>
           </li>
         </ul>
+        
       </section>
+      <span class="bordersidebar border-end border-success px-3 "></span>
 
       <Section class="col-6 d-flex justify-content-end">
 

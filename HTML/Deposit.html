@@ -69,15 +69,44 @@
     </nav>
   </header>
 
+  <section class="m-0 p-0">
+    <div class="greetings shadow m-0 rounded-bottom-4">
+      <h1 class="Welcome pt-5 px-5">Hello
+        <label class= "text" id="nameAccount"></label>
+      !</h1>
+      <p class="px-5 pb-5">Here you will find information about your products.</p>
+    </div>
+  </section>
+
+
   
 
-  <section class="formDeposit card col-12">
 
-    <H1 class="px-5">DEPOSIT PAGE</H1>
+  <main class="col-12 d-flex p-5 border-end">
+    
+    <section class="col-2">
+      <ul class="nav nav-underline flex-column d-flex justify-content-start">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Transactions History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Deposit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Withdraw</a>
+        </li>
+      </ul>
+      
+    </section>
+    <span class="bordersidebar border-end border-success px-3 "></span>
 
-    <div class="me-5 mt-5 d-flex justify-content-center">
-      <div class="card col-5">
-        <div class="card-body shadow p-5 bg-body-tertiary rounded-4">
+  
+
+    <div class="col-6 mx-5 ">
+      <div class="card-body shadow p-5 bg-body-tertiary rounded-4">
           <h5>Balance Available: </h5>
             <label>$</label>
             <label class= "number" id="balance">0</label>
@@ -92,13 +121,11 @@
   
             <div class="col mt-5 d-flex justify-content-center">
               <button type="button" class="col-4 btn btn-success btn-lg" id="depositButton" disabled>Make Deposit</button>
-              <button type="button" onclick="window.location.href='../Index.html'" class="button-loguin col-4 btn btn btn-danger rounded-3 btn-lg" alt="login"> Cancel </button>
+              <button type="button" onclick="window.location.href='../HTML/Account.html'" class="button-loguin col-4 btn btn btn-danger rounded-3 btn-lg" alt="login"> Cancel </button>
             </div>            
           </form>
         </div> 
       </div>
-             
-    </div>
 
 
     <div class="modal" id="successModal" tabindex="-1">
@@ -118,7 +145,6 @@
       </div>
     </div>
     
-  </section>
     
 
   <!--========== JS =============---->

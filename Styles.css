@@ -12147,4 +12147,19 @@ textarea.form-control-lg {
   background-size: cover;
   overflow: hidden;
   padding: 0;
+}
+
+.greetings {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(144deg, rgb(255, 255, 255) 0%, rgb(234, 233, 233) 64%, rgb(204, 203, 203) 98%);
+  box-shadow: #2e0331;
+}
+
+.welcome {
+  padding: 0;
+  margin: 0;
+}
+
+.bordersidebar {
+  opacity: 80%;
 }/*# sourceMappingURL=styles.css.map */

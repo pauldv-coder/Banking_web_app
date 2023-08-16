@@ -1,4 +1,4 @@
-// CAROUSEL //
+//* CAROUSEL *//
 
 function generalController() {
     const myCarouselElement = document.querySelector('#myCarousel');
@@ -10,15 +10,13 @@ function generalController() {
     }
 }
 
-//--- REGISTER --- //
+//* REGISTER  *//
     
 function userRegistrationController() {
     const inputs = document.querySelectorAll('input');
     const registerButton = document.getElementById("registerButton");
     const form = document.getElementById('userCreationForm');
 
-    
-    // Función para verificar si todos los campos tienen datos
     function checkInputs() {
         let allFilled = true;
         inputs.forEach(input => {
@@ -34,7 +32,7 @@ function userRegistrationController() {
         }
     }
 
-    // Añadir detector de eventos a cada campo de entrada
+    
     inputs.forEach(input => {
         input.addEventListener('input', checkInputs);
     });
@@ -74,81 +72,101 @@ function userRegistrationController() {
         }
 
         if (formIsValid) {
-            // Si es válido, muestra el mensaje de éxito y el botón para añadir otra cuenta
             successAlert.style.display = 'block';
             addAnotherAccountButton.style.display = 'block';
-
+    
             let userData = {
                 firstName: document.getElementById("nameid").value,
                 lastName: document.getElementById("lastnameid").value,
                 email: document.getElementById("useremail").value,
-                password: document.getElementById("password").value  // Añadimos la contraseña aquí
+                password: document.getElementById("password").value
             };
+    
+            // Enviar userData al servidor
+            fetch('http://localhost:3000/add-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            })
+        
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+            })
 
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            users.push(userData);
-            localStorage.setItem('users', JSON.stringify(users));
-
-            setTimeout(() => {
-                window.location.href = '../HTML/Login.html';
-            }, 5000); 
-            
+            .then(data => {
+                if (data.message === "User added successfully!") {
+                    setTimeout(() => {
+                        window.location.href = '../HTML/Login.html';
+                    }, 5000);
+                } else {
+                   "Intente mas tarde" // manejar errores aquí
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
-        
-        
     });
 
     if (addAnotherAccountButton) {
         addAnotherAccountButton.addEventListener('click', function () {
-            form.reset(); // Reiniciando directamente el formulario
+            form.reset();
             successAlert.style.display = 'none';
         });
     }
 }
 
+//* LOGIN *//
 
 function userLoginController() {
     const loginForm = document.querySelector('.loginForm');
 
     loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+        event.preventDefault();  // Descomentado para evitar que la página se refresque
 
         const userEmail = document.getElementById('useremailLogin').value;
         const userPassword = document.getElementById('passwordLogin').value;
 
-        // Parsea el objeto JSON almacenado
-        const storedCredentials = JSON.parse(localStorage.getItem('userCredentials'));
-        const storedEmail = storedCredentials ? storedCredentials.email : null;
-        const storedPassword = storedCredentials ? storedCredentials.password : null;
+        fetch('http://localhost:3000/all-data')
+            .then(response => response.json())
+            .then(users => {
+                const loggedInUser = users.find(user => user.email === userEmail && user.password === userPassword);
 
-        // Verifica si las credenciales ingresadas coinciden con las almacenadas
-        if (userEmail === storedEmail && userPassword === storedPassword) {
-            window.location.href = 'Account.html';
-        } else {
-            alert('Incorrect email or password!');
-        }
+                if (loggedInUser) {
+                    localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+                    window.location.href = '../HTML/Account.html';
+                } else {
+                    alert('Incorrect email or password!');
+                }
+            })
+            .catch(error => console.error('Error:', error));
     });
 }
+
 
 
 function logout() {
     document.getElementById("logoutBtn").addEventListener("click", function() {
-        // Limpiar los datos de usuario del localStorage
+        
         localStorage.removeItem("userData");
+        localStorage.removeItem("loggedInUser");
 
-        // Redirigir al usuario a la página de inicio o inicio de sesión
-        window.location.href = "../HTML/login.html"; // Asume que tu página de inicio de sesión se llama "login.html"
+        
+        window.location.href = "../HTML/login.html";
     });
 }
 
+
 function loadSession() {
-    let userData = localStorage.getItem("userData");
-    if (userData) {
-        let user = JSON.parse(userData);
-        if(document.getElementById("userInfo")) {
-            document.getElementById("userInfo").textContent = user.email;
-        }
-        // Aquí también puedes cargar otros datos, como el saldo, etc.
+    
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (loggedInUser && document.getElementById("nameAccount")) {
+        
+        document.getElementById("nameAccount").textContent = loggedInUser.firstName;
     }
 }
 
@@ -159,9 +177,8 @@ function allDataController() {
     if (document.getElementById("userTableBody")) {
         const allDataContainer = document.getElementById("userTableBody");
 
-        // Obtener usuarios del localStorage
         let users = JSON.parse(localStorage.getItem('users')) || [];
-        console.log('Usuarios cargados del localStorage:', users);  // Añadido para hacer seguimiento
+        console.log('Usuarios cargados del localStorage:', users);
 
         users.forEach((user, index) => {
             let userInfoRow = document.createElement('tr');
@@ -176,7 +193,7 @@ function allDataController() {
     }
 }
 
-/*VALIDATION AND UPDATE BALANCE*/
+//* VALIDATION AND UPDATE BALANCE *//
 
 function validateInputValue(value) {
     if (isNaN(value) || value.trim() === "") {
@@ -198,7 +215,7 @@ function updateBalance(currentBalance, amount, operation) {
     }
 }
 
-    // --- Deposit --- //
+    //  DEPOSIT //
 
 function depositController() {
     let currentBalance = parseFloat(document.getElementById('balance').innerText);
@@ -237,22 +254,21 @@ function depositController() {
         depositButton.disabled = true;
     }
 
-    // Establecer event listeners aquí:
     depositAmountField.addEventListener('input', validateInput);
     depositButton.addEventListener('click', performDeposit);
 
     console.log("Initializing deposit controller...");
 }
 
-// --- Withdraw --- //
+//*  WITHDRAW  *//
 
 function withdrawController() {
 
     let currentBalance = parseFloat(document.getElementById('balance').innerText);
     const withdrawAmountField = document.getElementById('withdrawAmount');
-    const withdrawButton = document.getElementById('withdrawButton'); // Corrección aquí: 'withdrawButton'
+    const withdrawButton = document.getElementById('withdrawButton');
     const successModal = document.getElementById('successModal');
-    const withdrawHelpText = document.getElementById('yourElementIdForHelpText'); // Asegúrate de asignar el elemento correcto para el texto de ayuda aquí.
+    const withdrawHelpText = document.getElementById('yourElementIdForHelpText');
 
     function validateInput() {
         console.log("Validating input...");
@@ -277,7 +293,7 @@ function withdrawController() {
     }
 
     function performWithdrawal() {
-        // ... (resto del código sigue igual)
+        
 
         var successModalInstance = new bootstrap.Modal(successModal);
         successModalInstance.show();
@@ -285,14 +301,14 @@ function withdrawController() {
         withdrawButton.disabled = true;
     }
 
-    // Establecer event listeners aquí:
+    
     withdrawAmountField.addEventListener('input', validateInput);
     withdrawButton.addEventListener('click', performWithdrawal);
 
     console.log("Initializing withdraw controller...");
 }
 
-/*Session*/
+//*CONTENT LOADED*//
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -309,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userRegistrationController();
     }
 
-    if (document.querySelector('event')) {
+    if (document.getElementById("loginForm")) {
         userLoginController();
     }
 
