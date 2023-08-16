@@ -1,17 +1,49 @@
-//* CAROUSEL *//
+//*CONTENT LOADED*//
 
-function generalController() {
-    const myCarouselElement = document.querySelector('#myCarousel');
-    if (myCarouselElement) {
-        const carousel = new bootstrap.Carousel(myCarouselElement, {
-            interval: 2000,
-            touch: false
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    initControllers();
+    loadSession();
+    logout();
+});
+
+function initControllers() {
+    if (document.querySelector("#myCarousel")) {
+        carouselController();
+    }
+
+    if (document.querySelector("#userCreationForm")) {
+        userRegistrationController();
+    }
+
+    if (document.querySelector(".loginForm")) {
+        userLoginController();
+    }
+
+    if (document.querySelector("#depositForm")) {
+        depositController();
+    }
+
+    if (document.querySelector("#withdrawForm")) {
+        withdrawController();
+    }
+
+    if (document.querySelector("#userTableBody")) {
+        allDataController();
     }
 }
 
+//* CAROUSEL *//
+
+function carouselController() {
+    const carousel = new bootstrap.Carousel(document.querySelector('#myCarousel'), {
+        interval: 2000,
+        touch: false
+    });
+}
+
 //* REGISTER  *//
-    
+
+
 function userRegistrationController() {
     const inputs = document.querySelectorAll('input');
     const registerButton = document.getElementById("registerButton");
@@ -81,7 +113,7 @@ function userRegistrationController() {
                 email: document.getElementById("useremail").value,
                 password: document.getElementById("password").value
             };
-    
+    debugger;
             // Enviar userData al servidor
             fetch('http://localhost:3000/add-user', {
                 method: 'POST',
@@ -104,7 +136,7 @@ function userRegistrationController() {
                         window.location.href = '../HTML/Login.html';
                     }, 5000);
                 } else {
-                   "Intente mas tarde" // manejar errores aquí
+                   "Try again later" // manejar errores aquí
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -117,6 +149,8 @@ function userRegistrationController() {
             successAlert.style.display = 'none';
         });
     }
+
+    
 }
 
 //* LOGIN *//
@@ -149,24 +183,24 @@ function userLoginController() {
 
 
 function logout() {
-    document.getElementById("logoutBtn").addEventListener("click", function() {
-        
-        localStorage.removeItem("userData");
-        localStorage.removeItem("loggedInUser");
-
-        
-        window.location.href = "../HTML/login.html";
-    });
+    const logoutBtn = document.querySelector("#logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function() {
+            localStorage.removeItem("userData");
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "../HTML/login.html";
+        });
+    }
 }
 
 
-function loadSession() {
-    
-    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-    if (loggedInUser && document.getElementById("nameAccount")) {
-        
-        document.getElementById("nameAccount").textContent = loggedInUser.firstName;
+function loadSession() {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    const nameAccountElement = document.querySelector("#nameAccount");
+
+    if (loggedInUser && nameAccountElement) {
+        nameAccountElement.textContent = loggedInUser.firstName;
     }
 }
 
@@ -308,33 +342,5 @@ function withdrawController() {
     console.log("Initializing withdraw controller...");
 }
 
-//*CONTENT LOADED*//
-
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    if (document.getElementById("withdrawForm")) {
-        withdrawController();
-    }
-
-    if (document.getElementById("depositForm")) {
-        depositController();
-    }
-
-    if (document.getElementById("userCreationForm")) {
-        userRegistrationController();
-    }
-
-    if (document.getElementById("loginForm")) {
-        userLoginController();
-    }
-
-    if (document.getElementById("userTableBody")) {
-        allDataController();
-    }
-
-    loadSession();
-    logout();
-});
 
 

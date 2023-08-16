@@ -8,12 +8,12 @@
     <!--========== SHORTCUT-ICON =============---->
     
     <title>Bacata Bank</title>
-    <link rel="shortcut icon" href="../images/Bacata Banking green b.png"></rel>
+    <link rel="shortcut icon" href="../Images/Bacata Banking green b.png"></rel>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <!--========== CSS =============---->
 
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../CSS/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,900;1,200&family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -44,48 +44,45 @@
           <div class="collapse navbar-collapse justify-content-end" id="mynavbar">
             <ul class="navbar-nav lg">
               <li class="nav-item">
-                <a class="nav-link active" href="../Index.html" data-toggle="popover" data-placement="bottom" title="Go to the homepage!" data-trigger="hover"">Home</a>
+                <a class="nav-link active" href="Index.html" data-toggle="popover" data-placement="bottom" title="Go to the homepage!" data-trigger="hover"">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../HTML/About_us.html" data-toggle="popover" data-placement="bottom" title="Do you want to know more about us?" data-trigger="hover">About us</a>
+                <a class="nav-link" href="About_us.html" data-toggle="popover" data-placement="bottom" title="Do you want to know more about us?" data-trigger="hover">About us</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../HTML/Withdraw.html">Withdraw</a>
+                <a class="nav-link" href="Withdraw.html">Withdraw</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../HTML/Deposit.html">Deposit</a>
+                <a class="nav-link" href="Deposit.html">Deposit</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../HTML/All_Data.html">All_Data</a>
+                <a class="nav-link" href="All_Data.html">All_Data</a>
               </li>
             </ul>
          </div>
 
-        <div class="container align-content-end">
+        <div class="Logoff ms-5 mb-3">
           <div class="col">
-            <div class="row text-right d-flex justify-content-end">
-              <span id="userInfo" class="text-light fw-bold pb-3">usuario@email.com</span>
-              <button id="logoutBtn" class="btn btn-success">Log off</button>
+            <div class="row d-flex text-end">
+              <span id="userInfo" class="row text-light fw-bold pb-3">usuario@email.com</span>
+              <button type="button" id="logoutBtn" class="button-logoff col-6 btn btn-success rounded-pill btn-md">Log off</button>
             </div>
           </div>
         </div>
              
             </div>
-        </nav>    
+        </nav>
+
     </header>
 
-    <section class="m-0 p-0">
-      <div class="greetings shadow m-0 rounded-bottom-4">
-        <h1 class="Welcome pt-5 px-5">Hello
-          <label class= "text" id="nameAccount"></label>
+    <section>
+      <div class="greetings shadow rounded-bottom-4">
+        <h1 class="Welcome my-0 pt-5 px-5">Hello
+          <label class="textUser" id="nameAccount"></label>
         !</h1>
         <p class="px-5 pb-5">Here you will find information about your products.</p>
       </div>
     </section>
-
-
-    
-
 
     <main class="col-12 d-flex p-5 border-end">
       

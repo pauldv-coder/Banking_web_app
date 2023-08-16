@@ -1,8 +1,9 @@
-const express = require('express');
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const shortid = require('shortid');
-const cors = require('cors');
+import express from 'express';
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
+import shortid from 'shortid';
+import cors from 'cors';
+
 
 async function initializeApp() {
     const app = express();
@@ -19,7 +20,7 @@ async function initializeApp() {
 
     app.use(cors()); 
 
-    // Aquí sirves los archivos estáticos desde el directorio 'public'
+    
     app.use(express.static('public'));
 
     app.get('/all-data', (req, res) => {

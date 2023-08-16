@@ -192,7 +192,6 @@ $nav-link-hover-color: #fff;
 /*DEPOSIT*/
 
 .formDeposit{
-    background-color: $light;
     position: relative;
     width: 100%;
     min-height: 100vh;
@@ -208,8 +207,7 @@ $nav-link-hover-color: #fff;
 }
 
 .welcome{
-    padding:0;
-    margin: 0;
+    box-sizing: border-box;
 }
 
 .bordersidebar{
