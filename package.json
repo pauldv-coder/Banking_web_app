@@ -1,15 +1,19 @@
 {
   "name": "bacata-bank",
-"version": "1.0.0",
-"description": "Proyecto para MTI",
-"scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
-"keywords": [],
-"author": "Paul Diaz",
-"license": "ISC",
-"dependencies": {
+  "version": "1.0.0",
+  "description": "Proyecto para MTI",
+  "scripts": {
+    "start": "node Script.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Paul Diaz",
+  "license": "ISC",
+  "dependencies": {
     "bootstrap": "^5.3.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "lowdb": "^6.0.1"
-  }
+  },
+  "main": "Script.js"
 }

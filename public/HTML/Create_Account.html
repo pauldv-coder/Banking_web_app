@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+    <!--========== SHORTCUT-ICON =============---->
+    
+    <title>Bacata Bank</title>
+    <link rel="shortcut icon" href="../Images/Bacata Banking green b.png"></rel>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!--========== CSS =============---->
+
+    <link rel="stylesheet" href="../CSS/Styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,900;1,200&family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+   
+
+</head> 
+
+<body>
+    
+    <header class="header">
+        
+        <nav class="navbar navbar-expand-sm navbar bg">
+            <div class="container-fluid col-12">
+              <a href='../../Index.html'>
+                
+                <img src="../Images/Bacata Banking all w.png" class="logobank col-4 me" alt="Bank Image">
+                
+              </a>
+          
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end" id="mynavbar">
+                <ul class="navbar-nav lg">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="../../Index.html" data-toggle="popover" data-placement="bottom" title="Go to the homepage!" data-trigger="hover"">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="About_us.html" data-toggle="popover" data-placement="bottom" title="Do you want to know more about us?" data-trigger="hover">About us</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Account.html">Account</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Withdraw.html">Withdraw</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Deposit.html">Deposit</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="All_Data.html">All_Data</a>
+                  </li>
+                </ul>
+             </div>
+             <div class="loguin-home row">
+              <button 
+                type="button" onclick="window.location.href='Login.html'" class="button-loguin btn btn-success rounded-pill btn-md" alt="login"> Sign in </button>
+                <a class="nav-link-account sm" href="Create_Account.html" data-toggle="popover" data-placement="bottom" title="Do you need to create a new count?" data-trigger="hover" alt="create-account">Create an account</a></div>
+             
+            </div>
+        </nav>
+        
+    </header>
+
+
+  <section class="create-account shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div class="row d-flex justify-content-end h-100">
+      <div class="card col-12 col-md-9 col-lg-7 col-xl-6 p-5">
+
+        <div>
+          <h2 class="text-center mb-5">Create an account</h2>
+        </div>
+          
+        <form id="userCreationForm" class="row mt-3 g-3 needs-validation" novalidate>
+
+          <div class="col-6">
+            <input type="text" class="form-control" id="nameid" placeholder="Write your first name" required>
+            <label for="nameid" class="form-label">First Name</label>
+            <div class="invalid-feedback">
+              Please write your First Name
+            </div>
+          </div>
+
+          <div class="col-6">
+            <input type="text" class="form-control" id="lastnameid" placeholder="Write your last name" required>
+            <label for="lastnameid" class="form-label">Last Name</label>
+            <div class="invalid-feedback">
+              Please write your Last Name
+            </div>
+          </div>
+
+          <div class="col-12">
+            <input type="email" class="form-control" id="useremail" placeholder="Enter your email"required>
+            <label for="useremail" class="form-label">Email</label>
+            <div class="invalid-feedback">
+              Please write a valid email address
+            </div>
+          </div>
+
+          <div class="col-6">
+            <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            <label for="password" class="form-label">Password</label>
+            <small id="passwordLengthHelp" class="form-text text-danger"></small>
+            <div class="invalid-feedback">
+              Please write a valid password
+            </div>
+          </div>
+
+          <div class="col-6">
+            <input type="password" class="form-control" id="passwordConfirmation" placeholder="Enter your password again" required>
+            <label for="passwordConfirmation" class="form-label">Re-enter password</label>
+            <small id="passwordMatchHelp" class="form-text text-danger"></small>
+            <div class="invalid-feedback">
+              Password is invalid or does not match
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="terms" required>
+              <label for="terms" class="form-check">I review and accept <a href="../HTML/Terms_of_service.html">Terms of service</a></label>
+              <div class="invalid-feedback">
+                You must accept the terms of service to register
+              </div>
+            </div>
+            
+          </div>
+
+          <button type="button" class="btn btn-success mt-3 rounded-pill btn-lg" id="registerButton" disabled>Register</button>
+
+
+          <div id="successAlert" class="alert alert-secondary rounded-3" role="alert" style="display: none;">
+            Congratulations! Your account has been registered successfully.
+          </div>
+
+          <button style="display: none;" onclick="window.location.href='../HTML/Create_Acount.html'" class="btn btn-info mt-3 rounded-pill btn-lg" id="addAnotherAccountButton">Add Another Account</button>
+        </form>
+            
+      </div>
+    </div>            
+        
+  </section>
+
+ <!--========== JS =============---->
+    
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+ <script src="../JS/Script.js"></script>
+
+</body>
