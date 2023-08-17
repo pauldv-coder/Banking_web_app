@@ -13,6 +13,11 @@ function initControllers() {
         carouselController();
     }
 
+    if (document.querySelector("#contactForm")) {
+        contactFormController();
+    }
+    
+
     if (document.querySelector("#userCreationForm")) {
         userRegistrationController();
     }
@@ -42,6 +47,65 @@ function carouselController() {
         touch: false
     });
 }
+
+
+//* CONTACT FORM *//
+
+function contactFormController() {
+    const form = document.querySelector("#contactForm");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let nombre = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let mensaje = document.getElementById("menssage").value;
+
+        sendDataAPI(name, email, message)
+            .then(data => {
+                if(data.success) {
+                    alert("Thanks, " + nombre + "! We have received your message.");
+                } else {
+                    alert("There was an error sending the message. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('There was an error sending the data:', error);
+                alert("There was an error sending the message. Please check your connection and try again.");
+            });
+
+        console.log(`Name: ${name}, Email: ${email}, Mensaje: ${message}`);
+
+        event.target.reset();
+    });
+}
+
+function enviarDatosAPI(name, email, message) {
+    return new Promise((resolve, reject) => {
+        fetch('http://localhost:3000/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                message: message
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => reject(error));
+    });
+}
+
 
 //* REGISTER CONTROLLER  *//
 
@@ -116,7 +180,7 @@ function userRegistrationController() {
                 lastName: document.getElementById("lastnameid").value,
                 email: document.getElementById("useremail").value,
                 password: document.getElementById("password").value,
-                createdDate: currentDateTime
+                createdDate: currentDate
             };
             
     
