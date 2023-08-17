@@ -141,7 +141,7 @@ function userRegistrationController() {
                         window.location.href = '../HTML/Login.html';
                     }, 5000);
                 } else {
-                   "Try again later" // manejar errores aquí
+                   "Try again later"
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -236,7 +236,7 @@ function allDataController() {
             
             allDataContainer.innerHTML = "";
 
-            // Si hay transacciones, las mostramos
+          
             if (userData.transactions && userData.transactions.length > 0) {
                 userData.transactions.forEach(transaction => {
                     let transactionRow = document.createElement('tr');
@@ -247,7 +247,7 @@ function allDataController() {
                     `;
                     allDataContainer.appendChild(transactionRow);
                 });
-            } else { // Si no hay transacciones, mostramos un mensaje
+            } else {
                 let noTransactionsRow = document.createElement('tr');
                 noTransactionsRow.innerHTML = `
                     <td colspan="3">No transactions available</td>
@@ -274,6 +274,8 @@ function validateInputValue(value) {
         return { isValid: false, message: "Please enter a valid amount." };
     } else if (parseFloat(value) < 0) {
         return { isValid: false, message: "Amount cannot be negative." };
+    } else if (value <= 0) {
+        return { isValid: false, message: "Amount should be greater than zero." };
     } else {
         return { isValid: true, message: "" };
     }
@@ -296,7 +298,7 @@ function depositController() {
     const depositAmountField = document.getElementById('depositAmount');
     const depositButton = document.getElementById('depositButton');
     const successModalElement = document.getElementById('successModal');
-    const successModal = new bootstrap.Modal(successModalElement); // Inicializamos el modal una sola vez
+    const successModal = new bootstrap.Modal(successModalElement);
 
     successModalElement.addEventListener('hidden.bs.modal', function() {
         const backdrops = document.querySelectorAll('.modal-backdrop');
@@ -327,13 +329,13 @@ function depositController() {
         if (newBalance !== null) {
             balanceField.innerText = newBalance.toFixed(2);
     
-            // Registro de la transacción
+            
             let transaction = {
                 type: "deposit",
                 amount: depositAmount,
                 date: new Date().toISOString().split('T')[0]
             };
-            loggedInUser.transactions.push(transaction); // Suponiendo que "loggedInUser" es accesible aquí
+            loggedInUser.transactions.push(transaction);
     
             successModal.show();
             depositAmountField.value = "";
@@ -393,13 +395,13 @@ function withdrawController() {
         if (newBalance !== null) {
             balanceField.innerText = newBalance.toFixed(2);
     
-            // Registro de la transacción
+          
             let transaction = {
                 type: "withdraw",
                 amount: withdrawalAmount,
                 date: new Date().toISOString().split('T')[0]
             };
-            loggedInUser.transactions.push(transaction); // Suponiendo que "loggedInUser" es accesible aquí
+            loggedInUser.transactions.push(transaction);
     
             var successModalInstance = new bootstrap.Modal(successModal);
             successModalInstance.show();

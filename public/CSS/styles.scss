@@ -19,8 +19,6 @@ $nav-link-hover-color: #fff;
 
 }
 
-
-
 .navbar {
     background: $primary;
     display: flexbox;
@@ -37,9 +35,32 @@ $nav-link-hover-color: #fff;
 
 }
 
-.navbar .nav .navbar-nav .nav-link.active {
-    color: $light;
+.navbar li {
+    list-style-type: none;
+    display: inline;
+    margin: 10px;
 }
+
+.navbar li a {
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+}
+
+.navbar li.active a {
+    background-color: #ddd;  // un fondo gris claro, por ejemplo
+    border-radius: 5px;
+}
+
+.sidebar-link{
+    color: $dark;
+}
+.sidebar-link li a {
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+}
+
 
 .logobank{
     height: auto;
