@@ -1,10 +1,12 @@
-//*CONTENT LOADED*//
+//*EVENT LISTENER*//
 
 document.addEventListener("DOMContentLoaded", function() {
     initControllers();
     loadSession();
     logout();
 });
+
+//Initializes controllers
 
 function initControllers() {
     if (document.querySelector("#myCarousel")) {
@@ -32,7 +34,7 @@ function initControllers() {
     }
 }
 
-//* CAROUSEL *//
+//* CAROUSEL CONTROLLER *//
 
 function carouselController() {
     const carousel = new bootstrap.Carousel(document.querySelector('#myCarousel'), {
@@ -41,7 +43,7 @@ function carouselController() {
     });
 }
 
-//* REGISTER  *//
+//* REGISTER CONTROLLER  *//
 
 
 function userRegistrationController() {
@@ -106,15 +108,18 @@ function userRegistrationController() {
         if (formIsValid) {
             successAlert.style.display = 'block';
             addAnotherAccountButton.style.display = 'block';
-    
+
+            let currentDate = new Date().toISOString().split('T')[0];
+
             let userData = {
                 firstName: document.getElementById("nameid").value,
                 lastName: document.getElementById("lastnameid").value,
                 email: document.getElementById("useremail").value,
-                password: document.getElementById("password").value
+                password: document.getElementById("password").value,
+                createdDate: currentDateTime
             };
-    debugger;
-            // Enviar userData al servidor
+            
+    
             fetch('http://localhost:3000/add-user', {
                 method: 'POST',
                 headers: {
@@ -159,7 +164,7 @@ function userLoginController() {
     const loginForm = document.querySelector('.loginForm');
 
     loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();  // Descomentado para evitar que la página se refresque
+        event.preventDefault();
 
         const userEmail = document.getElementById('useremailLogin').value;
         const userPassword = document.getElementById('passwordLogin').value;
@@ -198,39 +203,74 @@ function logout() {
 function loadSession() {
     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
     const nameAccountElement = document.querySelector("#nameAccount");
+    const userEmailElement = document.querySelector("#userInfo");
 
-    if (loggedInUser && nameAccountElement) {
-        nameAccountElement.textContent = loggedInUser.firstName;
+    if (loggedInUser) {
+        if (nameAccountElement) {
+            nameAccountElement.textContent = loggedInUser.firstName;
+        }
+        if (userEmailElement) {
+            userEmailElement.textContent = loggedInUser.email;
+        }
     }
 }
 
     
-    // All DATA //
+    //* ALL DATA *//
 
 function allDataController() {
     if (document.getElementById("userTableBody")) {
         const allDataContainer = document.getElementById("userTableBody");
+        
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        
+        if(!loggedInUser) {
+            console.log("No user logged in.");
+            return;
+        }
 
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        console.log('Usuarios cargados del localStorage:', users);
+        fetch(`http://localhost:3000/user-data?email=${loggedInUser.email}`)
+        .then(response => response.json())
+        .then(userData => {
+            console.log('Logged in user data:', userData);
+            
+            allDataContainer.innerHTML = "";
 
-        users.forEach((user, index) => {
-            let userInfoRow = document.createElement('tr');
-            userInfoRow.innerHTML = `
-                <th scope="row">${index + 1}</th>
-                <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td>${user.useremail}</td>
-            `;
-            allDataContainer.appendChild(userInfoRow);
-        });
+            // Si hay transacciones, las mostramos
+            if (userData.transactions && userData.transactions.length > 0) {
+                userData.transactions.forEach(transaction => {
+                    let transactionRow = document.createElement('tr');
+                    transactionRow.innerHTML = `
+                        <th scope="row">${transaction.date || "N/A"}</th>
+                        <td>${transaction.type === 'deposit' ? `Deposited: ${transaction.amount}` : `Withdrew: ${transaction.amount}`}</td>
+                        <td>${transaction.balanceAfterTransaction || "N/A"}</td>
+                    `;
+                    allDataContainer.appendChild(transactionRow);
+                });
+            } else { // Si no hay transacciones, mostramos un mensaje
+                let noTransactionsRow = document.createElement('tr');
+                noTransactionsRow.innerHTML = `
+                    <td colspan="3">No transactions available</td>
+                `;
+                allDataContainer.appendChild(noTransactionsRow);
+            }
+            
+        })
+        .catch(error => console.error('Error loading logged in user data:', error));
     }
 }
+
+
+
+
 
 //* VALIDATION AND UPDATE BALANCE *//
 
 function validateInputValue(value) {
-    if (isNaN(value) || value.trim() === "") {
+    
+    value = String(value).trim();
+
+    if (isNaN(value) || value === "") {
         return { isValid: false, message: "Please enter a valid amount." };
     } else if (parseFloat(value) < 0) {
         return { isValid: false, message: "Amount cannot be negative." };
@@ -255,10 +295,17 @@ function depositController() {
     let currentBalance = parseFloat(document.getElementById('balance').innerText);
     const depositAmountField = document.getElementById('depositAmount');
     const depositButton = document.getElementById('depositButton');
-    const successModal = document.getElementById('successModal');
+    const successModalElement = document.getElementById('successModal');
+    const successModal = new bootstrap.Modal(successModalElement); // Inicializamos el modal una sola vez
+
+    successModalElement.addEventListener('hidden.bs.modal', function() {
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        for (let backdrop of backdrops) {
+            backdrop.remove();
+        }
+    });
 
     function validateInput() {
-        console.log("Validating input...");
         let value = depositAmountField.value;
         let validationResult = validateInputValue(value);
 
@@ -272,75 +319,100 @@ function depositController() {
     }
 
     function performDeposit() {
-        
-        console.log("Making deposit...");
-        
         const balanceField = document.getElementById('balance');
+        let currentBalance = parseFloat(balanceField.innerText);
         let depositAmount = parseFloat(depositAmountField.value);
         const newBalance = updateBalance(currentBalance, depositAmount, "deposit");
+    
         if (newBalance !== null) {
             balanceField.innerText = newBalance.toFixed(2);
+    
+            // Registro de la transacción
+            let transaction = {
+                type: "deposit",
+                amount: depositAmount,
+                date: new Date().toISOString().split('T')[0]
+            };
+            loggedInUser.transactions.push(transaction); // Suponiendo que "loggedInUser" es accesible aquí
+    
+            successModal.show();
+            depositAmountField.value = "";
+            depositButton.disabled = true;
         }
-
-        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-        successModal.show();
-        depositAmountField.value = "";
-        depositButton.disabled = true;
     }
 
     depositAmountField.addEventListener('input', validateInput);
     depositButton.addEventListener('click', performDeposit);
-
-    console.log("Initializing deposit controller...");
 }
+
+
 
 //*  WITHDRAW  *//
 
 function withdrawController() {
-
-    let currentBalance = parseFloat(document.getElementById('balance').innerText);
+    const balanceField = document.getElementById('balance');
+    let currentBalance = parseFloat(balanceField.innerText);
     const withdrawAmountField = document.getElementById('withdrawAmount');
-    const withdrawButton = document.getElementById('withdrawButton');
+    const withdrawButton = document.getElementById('withdrawButtom');
     const successModal = document.getElementById('successModal');
-    const withdrawHelpText = document.getElementById('yourElementIdForHelpText');
+    const withdrawHelpText = document.getElementById('withdrawHelpText');
 
     function validateInput() {
-        console.log("Validating input...");
-        
-        let value = parseFloat(withdrawAmountField.value);
-        let validationResult = validateInputValue(value);
 
+        console.log("validateInput function has been called!");
+
+        let value = parseFloat(withdrawAmountField.value);
+        console.log("Input value:", value);
+        
+        let validationResult = validateInputValue(value);
+        console.log("Validation result:", validationResult);
+    
         if (!validationResult.isValid || value > currentBalance) {
+            console.log("Setting button to disabled");
             withdrawAmountField.classList.add("is-invalid");
             withdrawButton.disabled = true;
-
+    
             if(value > currentBalance) {
                 withdrawHelpText.textContent = "You cannot withdraw more than the available balance.";
             } else {
                 withdrawHelpText.textContent = validationResult.message;
             }
         } else {
+            console.log("Setting button to enabled");
             withdrawHelpText.textContent = "";
             withdrawAmountField.classList.remove("is-invalid");
             withdrawButton.disabled = false;
         }
     }
+    
 
     function performWithdrawal() {
-        
-
-        var successModalInstance = new bootstrap.Modal(successModal);
-        successModalInstance.show();
-        withdrawAmountField.value = "";
-        withdrawButton.disabled = true;
-    }
-
+        let withdrawalAmount = parseFloat(withdrawAmountField.value);
+        const newBalance = updateBalance(currentBalance, withdrawalAmount, "withdraw");
     
+        if (newBalance !== null) {
+            balanceField.innerText = newBalance.toFixed(2);
+    
+            // Registro de la transacción
+            let transaction = {
+                type: "withdraw",
+                amount: withdrawalAmount,
+                date: new Date().toISOString().split('T')[0]
+            };
+            loggedInUser.transactions.push(transaction); // Suponiendo que "loggedInUser" es accesible aquí
+    
+            var successModalInstance = new bootstrap.Modal(successModal);
+            successModalInstance.show();
+            withdrawAmountField.value = "";
+            withdrawButton.disabled = true;
+        } else {
+            console.error("Error: Couldn't update the balance.");
+        }
+    }
+    
+
     withdrawAmountField.addEventListener('input', validateInput);
     withdrawButton.addEventListener('click', performWithdrawal);
 
     console.log("Initializing withdraw controller...");
 }
-
-
-

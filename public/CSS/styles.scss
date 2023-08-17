@@ -191,15 +191,6 @@ $nav-link-hover-color: #fff;
 
 /*DEPOSIT*/
 
-.formDeposit{
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    background-size: cover;
-    overflow: hidden;
-    padding: 0;
-}
-
 .greetings{
     background: rgb(255,255,255);
     background: linear-gradient(144deg, rgba(255,255,255,1) 0%, rgba(234,233,233,1) 64%, rgba(204,203,203,1) 98%);
@@ -212,4 +203,8 @@ $nav-link-hover-color: #fff;
 
 .bordersidebar{
     opacity: 80%;
+}
+
+.imgAbout{
+    max-height: 200px;
 }
