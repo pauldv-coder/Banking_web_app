@@ -13,6 +13,11 @@ function initControllers() {
         carouselController();
     }
 
+    if (document.querySelector("#contactForm")) {
+        contactFormController();
+    }
+    
+
     if (document.querySelector("#userCreationForm")) {
         userRegistrationController();
     }
@@ -43,7 +48,74 @@ function carouselController() {
     });
 }
 
+
+//* CONTACT FORM *//
+
+function contactFormController() {
+    const form = document.querySelector("#contactForm");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let nombre = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let mensaje = document.getElementById("menssage").value;
+
+        sendDataAPI(name, email, message)
+            .then(data => {
+                if(data.success) {
+                    alert("Thanks, " + nombre + "! We have received your message.");
+                } else {
+                    alert("There was an error sending the message. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('There was an error sending the data:', error);
+                alert("There was an error sending the message. Please check your connection and try again.");
+            });
+
+        console.log(`Name: ${name}, Email: ${email}, Mensaje: ${message}`);
+
+        event.target.reset();
+    });
+}
+
+function enviarDatosAPI(name, email, message) {
+    return new Promise((resolve, reject) => {
+        fetch('http://localhost:3000/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                message: message
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => reject(error));
+    });
+}
+
+
+
+
 //* REGISTER CONTROLLER  *//
+
+
+function isValidEmail(email) {
+    var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return regex.test(email);
+}
 
 
 function userRegistrationController() {
@@ -83,6 +155,7 @@ function userRegistrationController() {
 
         let formIsValid = true;
 
+        
         if (passwordField && passwordField.value.length < 8) {
             passwordLengthHelpText.textContent = "The password must be at least 8 characters long.";
             passwordField.classList.add("is-invalid");
@@ -101,6 +174,16 @@ function userRegistrationController() {
             passwordConfirmationField.classList.remove("is-invalid");
         }
 
+        let userEmailField = document.getElementById("useremail");
+
+        if (!isValidEmail(userEmailField.value)) {
+            userEmailField.textContent = "Please enter a valid email address.";
+            userEmailField.classList.add("is-invalid");
+            formIsValid = false;
+        } else {
+            userEmailField.classList.remove("is-invalid");
+        }
+
         if (!form.checkValidity()) {
             formIsValid = false;
         }
@@ -116,7 +199,7 @@ function userRegistrationController() {
                 lastName: document.getElementById("lastnameid").value,
                 email: document.getElementById("useremail").value,
                 password: document.getElementById("password").value,
-                createdDate: currentDateTime
+                createdDate: currentDate
             };
             
     
