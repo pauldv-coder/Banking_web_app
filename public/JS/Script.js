@@ -107,7 +107,15 @@ function enviarDatosAPI(name, email, message) {
 }
 
 
+
+
 //* REGISTER CONTROLLER  *//
+
+
+function isValidEmail(email) {
+    var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return regex.test(email);
+}
 
 
 function userRegistrationController() {
@@ -147,6 +155,7 @@ function userRegistrationController() {
 
         let formIsValid = true;
 
+        
         if (passwordField && passwordField.value.length < 8) {
             passwordLengthHelpText.textContent = "The password must be at least 8 characters long.";
             passwordField.classList.add("is-invalid");
@@ -163,6 +172,16 @@ function userRegistrationController() {
         } else if (passwordConfirmationField) {
             passwordMatchHelpText.textContent = "";
             passwordConfirmationField.classList.remove("is-invalid");
+        }
+
+        let userEmailField = document.getElementById("useremail");
+
+        if (!isValidEmail(userEmailField.value)) {
+            userEmailField.textContent = "Please enter a valid email address.";
+            userEmailField.classList.add("is-invalid");
+            formIsValid = false;
+        } else {
+            userEmailField.classList.remove("is-invalid");
         }
 
         if (!form.checkValidity()) {

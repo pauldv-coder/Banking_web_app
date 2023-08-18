@@ -1,0 +1,77 @@
+Documentación para API de Usuarios y Mensajes
+
+ Introducción
+Esta API permite a los usuarios agregar datos de usuario y enviar mensajes. Los datos se almacenan en una base de datos local llamada "db.json".
+
+ Endpoints
+
+1. Obtener todos los datos
+- URL: /all-data
+- Método: GET
+- Respuesta: Una lista de todos los usuarios almacenados en la base de datos.
+  - Ejemplo de respuesta: 
+    json
+    [
+        {
+            "id": "randomID1",
+            "firstName": "Paul",
+            "lastName": "Diaz",
+            "email": "Paul.Diaz@example.com"
+        }
+    ]
+
+2. Añadir un usuario
+- URL: /add-user
+- Método: POST
+- Body Parameters:
+  - firstName: Nombre del usuario (string).
+  - lastName: Apellido del usuario (string).
+  - email: Email del usuario (string).
+- Respuesta: Mensaje de éxito y datos del usuario añadido.
+  - Ejemplo de solicitud: 
+    json
+    {
+        "firstName": "Paul",
+        "lastName": "Diaz",
+        "email": "Paul.Diaz@example.com"
+    }
+    
+  - Ejemplo de respuesta:
+    json
+    {
+        "message": "User added successfully!",
+        "user": {
+            "id": "randomID1",
+            "firstName": "Paul",
+            "lastName": "Diaz",
+            "email": "Paul.Diaz@example.com"
+        }
+    }
+    
+
+3. Enviar un mensaje
+- URL: /sendMessage
+- Método: POST
+- Body Parameters:
+  - nombre: Nombre del remitente del mensaje (string).
+  - email: Email del remitente (string).
+  - mensaje: Contenido del mensaje (string).
+- Respuesta: Mensaje de éxito.
+  - Ejemplo de solicitud:
+    json
+    {
+        "nombre": "Paul",
+        "email": "Paul.Diaz@example.com",
+        "mensaje": "Hola, ¡esto es un mensaje!"
+    }
+    
+  - Ejemplo de respuesta:
+    json
+    {
+        "success": true,
+        "message": "Message sent successfully!"
+    }
+    
+
+ Errores Comunes
+- 500 Internal Server Error: Esto indica que hubo un error en el servidor al procesar la solicitud. Puede deberse a un error en el código o a problemas con la base de datos.
